@@ -5,15 +5,7 @@ date: "2026-05-29"
 readTime: "13 min read"
 category: "GPU / CUDA"
 ---
-<!-- 
-# Tiled Matrix Multiplication in CUDA: Why a 200KB Cache Beats Brute Force
 
-> **Part 1 of a 3-part series on hardware-aware algorithms.**
-> Part 1 — Tiled matmul in CUDA *(you are here)*
-> Part 2 — How Mamba uses SRAM for a fast forward pass
-> Part 3 — FlashAttention: the design pattern behind both
-
-A 10,000 × 10,000 matrix multiplication on a GPU isn't fast because of more cores. It's fast because of a ~200KB cache most engineers never even think about. -->
 
 A few days ago I was reading about **State Space Models** and kept tripping over the same phrase: *"hardware-aware algorithm."* Papers used it like everyone already knew what it meant. I didn't — not at the hardware level. So I went down the rabbit hole, and the first stop was the most fundamental operation in all of deep learning: **how does a GPU actually multiply two matrices fast?**
 
