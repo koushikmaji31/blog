@@ -36,9 +36,6 @@ It's also the wrong number to fixate on.
 
 The textbook first GPU kernel gives each output element its own thread. Each thread reads one full row of `A` and one full column of `B`, multiplies them together, and writes a single element of `C`:
 
-![Each thread maps to one output element of C: thread 1 reads a row-strip of A and a column-strip of B to produce C's top-left element; thread 4 does the same for its own element. Different threads, overlapping reads.](/blog/diagrams/thread-tiles.svg)
-*Every thread owns one output element and independently streams its row of A and column of B. Notice how neighboring threads re-read overlapping data — that redundancy is what tiling later eliminates.*
-
 ```cuda
 __global__ void matmul_naive(const float* A, const float* B, float* C, int N) {
     int row = blockIdx.y * blockDim.y + threadIdx.y;
@@ -92,19 +89,6 @@ This is the entire game. Everything below is just *how* you read less.
 ## 4. The GPU memory hierarchy (the missing context)
 
 The reason "read less from HBM" is even possible is that HBM isn't the only memory on a GPU. There's a hierarchy, and it spans about five orders of magnitude in speed:
-
-```
-        ┌─────────────┐
-        │  Registers  │   ~20 TB/s, per-thread, ~KB         fastest
-        ├─────────────┤
-        │   SRAM      │   ~19 TB/s, per-SM, ~100-200KB      (shared memory)
-        │ (shared mem)│
-        ├─────────────┤
-        │  L2 cache   │   ~5 TB/s, chip-wide, ~40MB
-        ├─────────────┤
-        │  HBM / DRAM │   ~1.5 TB/s, chip-wide, ~40-80GB    slowest
-        └─────────────┘
-```
 
 ![The GPU memory hierarchy: registers, SRAM/shared memory, L2 cache, and HBM, ordered by speed and size](/blog/diagrams/memory-hierarchy.svg)
 *Five orders of magnitude separate the top of the hierarchy from the bottom. Tiling is the art of keeping the working set as high up this pyramid as possible.*
