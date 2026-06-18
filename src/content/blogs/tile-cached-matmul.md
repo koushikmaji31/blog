@@ -103,6 +103,9 @@ The reason "read less from HBM" is even possible is that HBM isn't the only memo
         └─────────────┘
 ```
 
+![The GPU memory hierarchy: registers, SRAM/shared memory, L2 cache, and HBM, ordered by speed and size](/blog/diagrams/memory-hierarchy.svg)
+*Five orders of magnitude separate the top of the hierarchy from the bottom. Tiling is the art of keeping the working set as high up this pyramid as possible.*
+
 The key players:
 
 - **HBM (global memory):** huge (tens of GB), but "slow" — 1.5 TB/s. This is where your matrices live by default.
@@ -112,6 +115,9 @@ The key players:
 The naive kernel never touches shared memory. Every thread independently re-reads `A` and `B` straight from HBM. And here's the kicker: **neighboring threads re-read the exact same data.** Thread `(0,0)` and thread `(0,1)` both stream the entire first row of `A`. Thousands of threads, redundantly hammering HBM for bytes their neighbors already fetched.
 
 That redundancy is the opportunity.
+
+![Naive vs tiled: in the naive kernel every thread reads HBM directly with redundant overlapping traffic; in the tiled kernel a tile is loaded into shared memory once and reused by all threads](/blog/diagrams/naive-vs-tiled.svg)
+*Same matrices, same math. The only difference is whether threads hammer HBM individually (left) or cooperate through shared memory (right).*
 
 ---
 
@@ -125,6 +131,9 @@ Instead of each thread computing its output in one long pass over HBM, the block
 2. Synchronize so every thread sees the full tile.
 3. Each thread computes the partial dot product *using only shared memory* — no HBM access in the inner loop.
 4. Synchronize again, then load the next pair of tiles.
+
+![Tiled matrix multiplication: a tile from a row of A and a tile from a column of B are multiplied and accumulated into the corresponding tile of C, stepping across the K dimension](/blog/diagrams/tiling-matmul.svg)
+*A tile of A (row i) and a tile of B (col j) combine into a tile of C (i, j). The block walks across the K dimension one tile at a time, accumulating partial sums.*
 
 Here's a classic `TILE = 16` (or 32) kernel:
 
