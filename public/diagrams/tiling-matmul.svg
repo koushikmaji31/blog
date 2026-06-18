@@ -1,111 +1,102 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="'Caveat','Comic Sans MS','Comic Neue',cursive">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 780" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
   <defs>
-    <marker id="arrowOrange" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0 0 L10 5 L0 10 z" fill="#e8822c"/>
-    </marker>
-    <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0 0 L10 5 L0 10 z" fill="#2f7fd1"/>
+    <marker id="redArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#e53935"/>
     </marker>
   </defs>
 
   <style>
-    .grid   { stroke:#2b2b2b; stroke-width:2; stroke-linecap:round; }
-    .gridT  { stroke:#2b2b2b; stroke-width:3.5; stroke-linecap:round; }
-    .green  { fill:none; stroke:#34a853; stroke-width:3; }
-    .orange { fill:none; stroke:#e8822c; stroke-width:3.5; }
-    .blue   { fill:none; stroke:#2f7fd1; stroke-width:3.5; }
-    .lbl    { font-size:26px; fill:#2b2b2b; }
-    .op     { font-size:30px; fill:#2b2b2b; }
-    .tO     { font-size:24px; fill:#e8822c; }
-    .tB     { font-size:24px; fill:#2f7fd1; }
+    .gA   { stroke:#2e7d32; stroke-width:2; }
+    .gB   { stroke:#f57c00; stroke-width:2; }
+    .gC   { stroke:#1565c0; stroke-width:2; }
+    .fA   { fill:#e8f5e9; }
+    .fB   { fill:#fff3e0; }
+    .fC   { fill:#e3f2fd; }
+    .actA { fill:#c8e6c9; }
+    .actB { fill:#ffe0b2; }
+    .cellA{ fill:#2e7d32; stroke:#000; stroke-width:2.5; }
+    .cellB{ fill:#ef6c00; stroke:#000; stroke-width:2.5; }
+    .cellC{ fill:#1565c0; stroke:#0d47a1; stroke-width:2.5; }
+    .ct   { fill:#fff; font-size:15px; font-weight:700; text-anchor:middle; }
+    .loop { fill:#e53935; font-size:18px; font-weight:700; }
+    .tA   { fill:#1b5e20; font-size:18px; font-weight:700; text-anchor:middle; }
+    .tB   { fill:#e65100; font-size:18px; font-weight:700; text-anchor:middle; }
+    .tC   { fill:#0d47a1; font-size:18px; font-weight:700; text-anchor:middle; }
+    .dash { stroke:#9e9e9e; stroke-width:2; stroke-dasharray:6 6; fill:none; }
   </style>
 
-  <!-- ================= TOP ROW : thread 1 (orange) ================= -->
-
-  <!-- Matrix A (top) grid, origin 60,50 size140 cell35 -->
-  <g class="grid">
-    <line x1="60" y1="50" x2="60" y2="190"/><line x1="95" y1="50" x2="95" y2="190"/>
-    <line x1="130" y1="50" x2="130" y2="190"/><line x1="165" y1="50" x2="165" y2="190"/>
-    <line x1="200" y1="50" x2="200" y2="190"/>
-    <line x1="60" y1="50" x2="200" y2="50"/><line x1="60" y1="85" x2="200" y2="85"/>
-    <line x1="60" y1="120" x2="200" y2="120"/><line x1="60" y1="155" x2="200" y2="155"/>
-    <line x1="60" y1="190" x2="200" y2="190"/>
+  <!-- ===================== MATRIX B (top-right) ===================== -->
+  <!-- light fill background -->
+  <rect class="fB" x="405" y="85" width="300" height="300"/>
+  <!-- active column (col index 2: x=555..630) -->
+  <rect class="actB" x="555" y="85" width="75" height="300"/>
+  <!-- grid lines -->
+  <g class="gB" fill="none">
+    <rect x="405" y="85" width="300" height="300"/>
+    <line x1="480" y1="85" x2="480" y2="385"/>
+    <line x1="555" y1="85" x2="555" y2="385"/>
+    <line x1="630" y1="85" x2="630" y2="385"/>
+    <line x1="405" y1="160" x2="705" y2="160"/>
+    <line x1="405" y1="235" x2="705" y2="235"/>
+    <line x1="405" y1="310" x2="705" y2="310"/>
   </g>
-  <rect class="orange" x="52" y="42" width="86" height="156" rx="12"/>
-  <rect class="green" x="66" y="56" width="22" height="128" rx="9"/>
-  <rect class="green" x="101" y="56" width="22" height="128" rx="9"/>
-  <text class="lbl" x="124" y="216" text-anchor="middle">A</text>
+  <!-- B(k) active cell: col2,row1 (y=160..235) -->
+  <rect class="cellB" x="555" y="160" width="75" height="75"/>
+  <text class="ct" x="592" y="192">B</text>
+  <text class="ct" x="592" y="209">(k)</text>
+  <!-- Loop K vertical arrow -->
+  <line x1="540" y1="95" x2="540" y2="392" stroke="#e53935" stroke-width="3" marker-end="url(#redArrow)"/>
+  <text class="loop" x="528" y="245" transform="rotate(-90 528 245)" text-anchor="middle">Loop K</text>
+  <!-- label -->
+  <text class="tB" x="555" y="45">Matrix B (K×N)</text>
+  <text class="tB" x="555" y="68">Active Col</text>
 
-  <text class="op" x="258" y="130" text-anchor="middle">@</text>
-
-  <!-- Matrix B (top) grid, origin 320,50 -->
-  <g class="grid">
-    <line x1="320" y1="50" x2="320" y2="190"/><line x1="355" y1="50" x2="355" y2="190"/>
-    <line x1="390" y1="50" x2="390" y2="190"/><line x1="425" y1="50" x2="425" y2="190"/>
-    <line x1="460" y1="50" x2="460" y2="190"/>
-    <line x1="320" y1="50" x2="460" y2="50"/><line x1="320" y1="85" x2="460" y2="85"/>
-    <line x1="320" y1="120" x2="460" y2="120"/><line x1="320" y1="155" x2="460" y2="155"/>
-    <line x1="320" y1="190" x2="460" y2="190"/>
+  <!-- ===================== MATRIX A (bottom-left) ===================== -->
+  <rect class="fA" x="75" y="405" width="300" height="300"/>
+  <!-- active row (row index 1: y=480..555) -->
+  <rect class="actA" x="75" y="480" width="300" height="75"/>
+  <g class="gA" fill="none">
+    <rect x="75" y="405" width="300" height="300"/>
+    <line x1="150" y1="405" x2="150" y2="705"/>
+    <line x1="225" y1="405" x2="225" y2="705"/>
+    <line x1="300" y1="405" x2="300" y2="705"/>
+    <line x1="75" y1="480" x2="375" y2="480"/>
+    <line x1="75" y1="555" x2="375" y2="555"/>
+    <line x1="75" y1="630" x2="375" y2="630"/>
   </g>
-  <rect class="orange" x="312" y="42" width="156" height="86" rx="12"/>
-  <rect class="green" x="326" y="56" width="128" height="22" rx="9"/>
-  <rect class="green" x="326" y="91" width="128" height="22" rx="9"/>
-  <text class="lbl" x="390" y="216" text-anchor="middle">B</text>
+  <!-- A(k) active cell: col1,row1 (x=150..225, y=480..555) -->
+  <rect class="cellA" x="150" y="480" width="75" height="75"/>
+  <text class="ct" x="187" y="512">A</text>
+  <text class="ct" x="187" y="529">(k)</text>
+  <!-- Loop K horizontal arrow -->
+  <line x1="88" y1="465" x2="390" y2="465" stroke="#e53935" stroke-width="3" marker-end="url(#redArrow)"/>
+  <text class="loop" x="225" y="455" text-anchor="middle">Loop K</text>
+  <!-- label -->
+  <text class="tA" x="225" y="740">Matrix A (M×K)</text>
+  <text class="tA" x="225" y="763">Active Row</text>
 
-  <!-- orange arrow B(top) -> C top-left tile -->
-  <path d="M472 96 Q610 110 724 198" fill="none" stroke="#e8822c" stroke-width="3" marker-end="url(#arrowOrange)"/>
-  <text class="tO" x="556" y="118">thread 1</text>
-
-  <!-- ================= dots between the two examples ================= -->
-  <text class="op" x="390" y="282" text-anchor="middle">...</text>
-
-  <!-- ================= MATRIX C (right) ================= -->
-  <g class="grid">
-    <line x1="740" y1="170" x2="740" y2="330"/><line x1="780" y1="170" x2="780" y2="330"/>
-    <line x1="860" y1="170" x2="860" y2="330"/><line x1="900" y1="170" x2="900" y2="330"/>
-    <line x1="740" y1="170" x2="900" y2="170"/><line x1="740" y1="210" x2="900" y2="210"/>
-    <line x1="740" y1="290" x2="900" y2="290"/><line x1="740" y1="330" x2="900" y2="330"/>
+  <!-- ===================== MATRIX C (bottom-right) ===================== -->
+  <rect class="fC" x="405" y="405" width="300" height="300"/>
+  <g class="gC" fill="none">
+    <rect x="405" y="405" width="300" height="300"/>
+    <line x1="480" y1="405" x2="480" y2="705"/>
+    <line x1="555" y1="405" x2="555" y2="705"/>
+    <line x1="630" y1="405" x2="630" y2="705"/>
+    <line x1="405" y1="480" x2="705" y2="480"/>
+    <line x1="405" y1="555" x2="705" y2="555"/>
+    <line x1="405" y1="630" x2="705" y2="630"/>
   </g>
-  <g class="gridT">
-    <line x1="820" y1="170" x2="820" y2="330"/><line x1="740" y1="250" x2="900" y2="250"/>
-  </g>
-  <rect class="orange" x="732" y="162" width="96" height="96" rx="12"/>
-  <rect class="blue" x="812" y="242" width="96" height="96" rx="12"/>
-  <text class="lbl" x="820" y="152" text-anchor="middle">C</text>
+  <!-- C target tile: col2,row1 (x=555..630, y=480..555) -->
+  <rect class="cellC" x="555" y="480" width="75" height="75"/>
+  <text class="ct" x="592" y="512">C</text>
+  <text class="ct" x="592" y="529">Tile</text>
+  <!-- label -->
+  <text class="tC" x="555" y="740">Matrix C (M×N)</text>
+  <text class="tC" x="555" y="763">Target Tile</text>
 
-  <!-- ================= BOTTOM ROW : thread 4 (blue) ================= -->
-
-  <!-- Matrix A (bottom) grid, origin 60,360 -->
-  <g class="grid">
-    <line x1="60" y1="360" x2="60" y2="500"/><line x1="95" y1="360" x2="95" y2="500"/>
-    <line x1="130" y1="360" x2="130" y2="500"/><line x1="165" y1="360" x2="165" y2="500"/>
-    <line x1="200" y1="360" x2="200" y2="500"/>
-    <line x1="60" y1="360" x2="200" y2="360"/><line x1="60" y1="395" x2="200" y2="395"/>
-    <line x1="60" y1="430" x2="200" y2="430"/><line x1="60" y1="465" x2="200" y2="465"/>
-    <line x1="60" y1="500" x2="200" y2="500"/>
-  </g>
-  <rect class="blue" x="122" y="352" width="86" height="156" rx="12"/>
-  <rect class="green" x="136" y="366" width="22" height="128" rx="9"/>
-  <rect class="green" x="171" y="366" width="22" height="128" rx="9"/>
-  <text class="lbl" x="124" y="526" text-anchor="middle">A</text>
-
-  <text class="op" x="258" y="440" text-anchor="middle">@</text>
-
-  <!-- Matrix B (bottom) grid, origin 320,360 -->
-  <g class="grid">
-    <line x1="320" y1="360" x2="320" y2="500"/><line x1="355" y1="360" x2="355" y2="500"/>
-    <line x1="390" y1="360" x2="390" y2="500"/><line x1="425" y1="360" x2="425" y2="500"/>
-    <line x1="460" y1="360" x2="460" y2="500"/>
-    <line x1="320" y1="360" x2="460" y2="360"/><line x1="320" y1="395" x2="460" y2="395"/>
-    <line x1="320" y1="430" x2="460" y2="430"/><line x1="320" y1="465" x2="460" y2="465"/>
-    <line x1="320" y1="500" x2="460" y2="500"/>
-  </g>
-  <rect class="blue" x="312" y="422" width="156" height="86" rx="12"/>
-  <rect class="green" x="326" y="436" width="128" height="22" rx="9"/>
-  <rect class="green" x="326" y="471" width="128" height="22" rx="9"/>
-  <text class="lbl" x="390" y="526" text-anchor="middle">B</text>
-
-  <!-- blue arrow B(bottom) -> C bottom-right tile -->
-  <path d="M472 466 Q660 470 806 304" fill="none" stroke="#2f7fd1" stroke-width="3" marker-end="url(#arrowBlue)"/>
-  <text class="tB" x="556" y="500">thread 4</text>
+  <!-- ===================== projection dashes ===================== -->
+  <!-- A(k) row -> C tile (horizontal) -->
+  <path class="dash" d="M225 517 L555 517"/>
+  <!-- B(k) col -> C tile (vertical) -->
+  <path class="dash" d="M592 235 L592 480"/>
 </svg>
