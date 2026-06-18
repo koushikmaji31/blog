@@ -34,7 +34,10 @@ It's also the wrong number to fixate on.
 
 ## 2. The naive CUDA kernel (and why it's slow)
 
-The textbook first GPU kernel gives each output element its own thread:
+The textbook first GPU kernel gives each output element its own thread. Each thread reads one full row of `A` and one full column of `B`, multiplies them together, and writes a single element of `C`:
+
+![Each thread maps to one output element of C: thread 1 reads a row-strip of A and a column-strip of B to produce C's top-left element; thread 4 does the same for its own element. Different threads, overlapping reads.](/blog/diagrams/thread-tiles.svg)
+*Every thread owns one output element and independently streams its row of A and column of B. Notice how neighboring threads re-read overlapping data — that redundancy is what tiling later eliminates.*
 
 ```cuda
 __global__ void matmul_naive(const float* A, const float* B, float* C, int N) {
