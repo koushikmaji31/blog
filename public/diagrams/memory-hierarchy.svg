@@ -18,8 +18,8 @@
 
   <!-- ===== Pyramid (apex centre x = 290) ===== -->
   <!-- Registers -->
-  <polygon points="262,150 318,150 352,215 228,215" fill="#f59e0b"/>
-  <text x="290" y="190" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Registers</text>
+  <polygon points="290,148 352,215 228,215" fill="#f59e0b"/>
+  <text x="290" y="200" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Registers</text>
   <!-- SRAM -->
   <polygon points="228,217 352,217 387,280 193,280" fill="#14b8a6"/>
   <text x="290" y="248" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">SRAM</text>
