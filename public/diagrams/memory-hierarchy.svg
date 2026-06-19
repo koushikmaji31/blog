@@ -16,49 +16,50 @@
     <text x="44" y="356" text-anchor="middle" font-size="11" font-weight="700" fill="#64748b" letter-spacing="1">BIG</text>
   </g>
 
-  <!-- ===== Pyramid (apex centre x = 290) ===== -->
-  <!-- Registers -->
-  <polygon points="290,148 352,215 228,215" fill="#f59e0b"/>
-  <text x="290" y="200" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Registers</text>
+  <!-- ===== Pyramid: apex (290,150), base corners (135,410)&(445,410) =====
+       all band corners lie on the two straight edges -> single clean triangle -->
+  <!-- Registers (true apex triangle) -->
+  <polygon points="290,150 328,213 252,213" fill="#f59e0b"/>
+  <text x="290" y="207" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Registers</text>
   <!-- SRAM -->
-  <polygon points="228,217 352,217 387,280 193,280" fill="#14b8a6"/>
-  <text x="290" y="248" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">SRAM</text>
-  <text x="290" y="266" text-anchor="middle" font-size="10.5" fill="#d1fae5">shared memory</text>
+  <polygon points="251,216 329,216 366,277 214,277" fill="#14b8a6"/>
+  <text x="290" y="246" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">SRAM</text>
+  <text x="290" y="264" text-anchor="middle" font-size="10.5" fill="#d1fae5">shared memory</text>
   <!-- L2 -->
-  <polygon points="193,282 387,282 421,345 159,345" fill="#3b82f6"/>
-  <text x="290" y="319" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">L2 Cache</text>
+  <polygon points="213,280 368,280 404,341 176,341" fill="#3b82f6"/>
+  <text x="290" y="316" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">L2 Cache</text>
   <!-- HBM -->
-  <polygon points="159,347 421,347 455,410 125,410" fill="#6366f1"/>
-  <text x="290" y="384" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">HBM / DRAM</text>
+  <polygon points="174,344 406,344 445,410 135,410" fill="#6366f1"/>
+  <text x="290" y="381" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">HBM / DRAM</text>
 
   <!-- ===== Right annotation rail ===== -->
   <line x1="556" y1="160" x2="556" y2="400" stroke="#e2e8f0" stroke-width="2"/>
 
-  <!-- connectors from each band edge to the rail (at band mid-height) -->
+  <!-- connectors from each band's right edge to the rail (at band mid-height) -->
   <g stroke="#cbd5e1" stroke-width="1.5">
-    <line x1="335" y1="182" x2="556" y2="182"/>
-    <line x1="370" y1="248" x2="556" y2="248"/>
-    <line x1="404" y1="313" x2="556" y2="313"/>
-    <line x1="438" y1="378" x2="556" y2="378"/>
+    <line x1="311" y1="185" x2="556" y2="185"/>
+    <line x1="348" y1="247" x2="556" y2="247"/>
+    <line x1="386" y1="311" x2="556" y2="311"/>
+    <line x1="425" y1="377" x2="556" y2="377"/>
   </g>
 
   <!-- Registers tag -->
-  <circle cx="584" cy="178" r="6" fill="#f59e0b"/>
-  <text x="600" y="183" font-size="16" font-weight="800" fill="#b45309">~20 TB/s</text>
-  <text x="600" y="201" font-size="12.5" fill="#64748b">~KB &#183; per-thread</text>
+  <circle cx="584" cy="181" r="6" fill="#f59e0b"/>
+  <text x="600" y="186" font-size="16" font-weight="800" fill="#b45309">~20 TB/s</text>
+  <text x="600" y="204" font-size="12.5" fill="#64748b">~KB &#183; per-thread</text>
 
   <!-- SRAM tag -->
-  <circle cx="584" cy="244" r="6" fill="#14b8a6"/>
-  <text x="600" y="249" font-size="16" font-weight="800" fill="#0f766e">~19 TB/s</text>
-  <text x="600" y="267" font-size="12.5" fill="#64748b">~100&#8211;200 KB &#183; per-SM</text>
+  <circle cx="584" cy="243" r="6" fill="#14b8a6"/>
+  <text x="600" y="248" font-size="16" font-weight="800" fill="#0f766e">~19 TB/s</text>
+  <text x="600" y="266" font-size="12.5" fill="#64748b">~100&#8211;200 KB &#183; per-SM</text>
 
   <!-- L2 tag -->
-  <circle cx="584" cy="309" r="6" fill="#3b82f6"/>
-  <text x="600" y="314" font-size="16" font-weight="800" fill="#1d4ed8">~5 TB/s</text>
-  <text x="600" y="332" font-size="12.5" fill="#64748b">~40 MB &#183; chip-wide</text>
+  <circle cx="584" cy="307" r="6" fill="#3b82f6"/>
+  <text x="600" y="312" font-size="16" font-weight="800" fill="#1d4ed8">~5 TB/s</text>
+  <text x="600" y="330" font-size="12.5" fill="#64748b">~40 MB &#183; chip-wide</text>
 
   <!-- HBM tag -->
-  <circle cx="584" cy="374" r="6" fill="#6366f1"/>
-  <text x="600" y="379" font-size="16" font-weight="800" fill="#4338ca">~1.5 TB/s</text>
-  <text x="600" y="397" font-size="12.5" fill="#64748b">~40&#8211;80 GB &#183; chip-wide</text>
+  <circle cx="584" cy="373" r="6" fill="#6366f1"/>
+  <text x="600" y="378" font-size="16" font-weight="800" fill="#4338ca">~1.5 TB/s</text>
+  <text x="600" y="396" font-size="12.5" fill="#64748b">~40&#8211;80 GB &#183; chip-wide</text>
 </svg>
