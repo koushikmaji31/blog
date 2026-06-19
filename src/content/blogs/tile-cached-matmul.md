@@ -13,7 +13,7 @@ The answer turned out to be a single idea — *tiling* — and once it clicked, 
 
 ---
 
-## 1. The operation everyone takes for granted
+## 1. The sequential operation
 
 Matrix multiplication is deceptively simple. To compute `C = A × B` where all three are N×N:
 
@@ -174,7 +174,7 @@ Same FLOPs. Same answer. The *only* thing that changed is **where the data lived
 
 ---
 
-## 7. Gotchas — what I got wrong
+## 7. What I got wrong
 
 This is the part I'd skip in a textbook and the part that actually taught me something.
 
@@ -186,9 +186,7 @@ This is the part I'd skip in a textbook and the part that actually taught me som
 
 **This is still not cuBLAS.** The tiled kernel above is the *concept*, not the state of the art. Production GEMM (cuBLAS / CUTLASS) layers on register blocking (each thread computes a small *grid* of outputs, not one), double-buffering (prefetch the next tile while computing the current one), vectorized loads, and Tensor Cores. But every one of those is an *optimization on top of tiling*. Tiling is the foundation.
 
----
-
-## 8. The pattern (and what's next)
+### The pattern
 
 Strip away the CUDA syntax and the idea is almost embarrassingly general:
 
@@ -196,9 +194,9 @@ Strip away the CUDA syntax and the idea is almost embarrassingly general:
 
 That's it. That's what "hardware-aware" means. It's not about clever math, the matmul did the *exact same multiplications*. It's about respecting the memory hierarchy.
 
-And once you see it, you can't unsee it. In **Part 2**, I'll show how **Mamba** uses this identical principle for something that looks nothing like a matmul a *sequential scan* fusing the whole operation into one kernel that keeps its state in SRAM and only writes the final result to HBM. The surprising punchline: a "slow," inherently sequential algorithm can crush a "fast," parallel one, purely by respecting the hierarchy.
+And once you see it, you can't unsee it. In **Part 2**, We'll see how **Mamba** uses this identical principle for something that looks nothing like a matmul a *sequential scan* fusing the whole operation into one kernel that keeps its state in SRAM and only writes the final result to HBM. 
 
-In **Part 3**, **FlashAttention** generalizes the trick to attention itself and that's the algorithm that inspired Mamba's scan in the first place. Three algorithms, one pattern.
+In **Part 3**, **FlashAttention** generalizes the trick to attention itself and that's the algorithm that inspired Mamba's scan in the first place.
 
 ---
 
