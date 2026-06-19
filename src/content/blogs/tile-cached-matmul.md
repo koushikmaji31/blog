@@ -1,5 +1,5 @@
 ---
-title: "Tiled Matrix Multiplication in CUDA: Why a 200KB Cache Beats Brute Force"
+title: "Tiled Matrix Multiplication in CUDA"
 excerpt: "A 10,000×10,000 matmul on a GPU isn't fast because of more cores, it's fast because of a tiny on-chip cache most engineers never think about. Part 1 of a 3-part series on hardware-aware algorithms."
 date: "2026-05-29"
 readTime: "13 min read"
@@ -194,9 +194,9 @@ Strip away the CUDA syntax and the idea is almost embarrassingly general:
 
 That's it. That's what "hardware-aware" means. It's not about clever math, the matmul did the *exact same multiplications*. It's about respecting the memory hierarchy.
 
-And once you see it, you can't unsee it. In **Part 2**, We'll see how **Mamba** uses this identical principle for something that looks nothing like a matmul a *sequential scan* fusing the whole operation into one kernel that keeps its state in SRAM and only writes the final result to HBM. 
+And once you see it, you can't unsee it. In **Part 2**, we'll see how **Mamba** uses this identical principle for something that looks nothing like a matmul: a *sequential scan*, fusing the whole operation into one kernel that keeps its state in SRAM and only writes the final result to HBM.
 
-In **Part 3**, **FlashAttention** generalizes the trick to attention itself and that's the algorithm that inspired Mamba's scan in the first place.
+In **Part 3**, **FlashAttention** generalizes the trick to attention itself, and that's the algorithm that inspired Mamba's scan in the first place.
 
 ---
 
