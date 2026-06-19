@@ -1,13 +1,13 @@
 ---
 title: "Tiled Matrix Multiplication in CUDA: Why a 200KB Cache Beats Brute Force"
-excerpt: "A 10,000×10,000 matmul on a GPU isn't fast because of more cores — it's fast because of a tiny on-chip cache most engineers never think about. Part 1 of a 3-part series on hardware-aware algorithms."
+excerpt: "A 10,000×10,000 matmul on a GPU isn't fast because of more cores, it's fast because of a tiny on-chip cache most engineers never think about. Part 1 of a 3-part series on hardware-aware algorithms."
 date: "2026-05-29"
 readTime: "13 min read"
 category: "GPU / CUDA"
 ---
 
 
-A few days ago I was reading about **State Space Models** and kept tripping over the same phrase: *"hardware-aware algorithm."* Papers used it like everyone already knew what it meant. I didn't — not at the hardware level. So I went down the rabbit hole, and the first stop was the most fundamental operation in all of deep learning: **how does a GPU actually multiply two matrices fast?**
+A few days ago I was reading about **State Space Models** and kept tripping over the same phrase: *"hardware-aware algorithm."* Papers used it like everyone already knew what it meant. I didn't, not at the hardware level. So I went down the rabbit hole, and the first stop was the most fundamental operation in all of deep learning: **how does a GPU actually multiply two matrices fast?**
 
 The answer turned out to be a single idea — *tiling* — and once it clicked, I started seeing the same pattern everywhere: in Mamba's selective scan, in FlashAttention, in basically every kernel that wins. This post is where it starts.
 
@@ -74,13 +74,13 @@ $$
 
 In the naive kernel, every multiply-add reads two fresh 4-byte floats from global memory: 2 FLOPs for 8 bytes, so AI ≈ **0.25 FLOP/byte**. That is catastrophically low.
 
-The crossover point — where a GPU stops being memory-bound and starts being compute-bound — is:
+The crossover point where a GPU stops being memory-bound and starts being compute-bound is:
 
 $$
 \text{AI}_{\text{crit}} = \frac{\text{peak FLOP/s}}{\text{peak bytes/s}} = \frac{19.5 \times 10^{12}}{1.5 \times 10^{12}} \approx 13 \text{ FLOP/byte}
 $$
 
-So we need to be near ~13 FLOP/byte to saturate the cores. We're at 0.25. **We need to read each operand from HBM ~50× less often.** Not compute less — *read* less.
+So we need to be near ~13 FLOP/byte to saturate the cores. We're at 0.25. **We need to read each operand from HBM ~50× less often.** Not compute less *read* less.
 
 This is the entire game. Everything below is just *how* you read less.
 
@@ -95,8 +95,8 @@ The reason "read less from HBM" is even possible is that HBM isn't the only memo
 
 The key players:
 
-- **HBM (global memory):** huge (tens of GB), but "slow" — 1.5 TB/s. This is where your matrices live by default.
-- **SRAM (shared memory):** tiny (~100–200KB *per Streaming Multiprocessor*), but ~10× the bandwidth of HBM and far lower latency. Crucially, it's **programmer-controlled** — you decide what goes in it. It's also shared by all threads in a block, so it's a scratchpad for *cooperation*.
+- **HBM (global memory):** huge (tens of GB), but "slow" 1.5 TB/s. This is where your matrices live by default.
+- **SRAM (shared memory):** tiny (~100–200KB *per Streaming Multiprocessor*), but ~10× the bandwidth of HBM and far lower latency. Crucially, it's **programmer-controlled** you decide what goes in it. It's also shared by all threads in a block, so it's a scratchpad for *cooperation*.
 - **Registers:** fastest of all, but private to a single thread and scarce.
 
 The naive kernel never touches shared memory. Every thread independently re-reads `A` and `B` straight from HBM. And here's the kicker: **neighboring threads re-read the exact same data.** Thread `(0,0)` and thread `(0,1)` both stream the entire first row of `A`. Thousands of threads, redundantly hammering HBM for bytes their neighbors already fetched.
@@ -194,19 +194,19 @@ Strip away the CUDA syntax and the idea is almost embarrassingly general:
 
 > **Identify the working set. Pull it into the fastest memory you can. Reuse it as much as possible before you write back. Touch slow memory as few times as you can get away with.**
 
-That's it. That's what "hardware-aware" means. It's not about clever math — the matmul did the *exact same multiplications*. It's about respecting the memory hierarchy.
+That's it. That's what "hardware-aware" means. It's not about clever math, the matmul did the *exact same multiplications*. It's about respecting the memory hierarchy.
 
-And once you see it, you can't unsee it. In **Part 2**, I'll show how **Mamba** uses this identical principle for something that looks nothing like a matmul — a *sequential scan* — fusing the whole operation into one kernel that keeps its state in SRAM and only writes the final result to HBM. The surprising punchline: a "slow," inherently sequential algorithm can crush a "fast," parallel one, purely by respecting the hierarchy.
+And once you see it, you can't unsee it. In **Part 2**, I'll show how **Mamba** uses this identical principle for something that looks nothing like a matmul a *sequential scan* fusing the whole operation into one kernel that keeps its state in SRAM and only writes the final result to HBM. The surprising punchline: a "slow," inherently sequential algorithm can crush a "fast," parallel one, purely by respecting the hierarchy.
 
-In **Part 3**, **FlashAttention** generalizes the trick to attention itself — and that's the algorithm that inspired Mamba's scan in the first place. Three algorithms, one pattern.
+In **Part 3**, **FlashAttention** generalizes the trick to attention itself and that's the algorithm that inspired Mamba's scan in the first place. Three algorithms, one pattern.
 
 ---
 
 ### References & further reading
 
-- NVIDIA CUDA C++ Programming Guide — *Shared Memory* and *Tiled Matrix Multiplication*
-- *Programming Massively Parallel Processors* (Kirk & Hwu) — the canonical tiling chapter
+- NVIDIA CUDA C++ Programming Guide *Shared Memory* and *Tiled Matrix Multiplication*
+- *Programming Massively Parallel Processors* (Kirk & Hwu) the canonical tiling chapter
 - CUTLASS — NVIDIA's open-source, production-grade GEMM templates
-- The Roofline Model (Williams et al.) — the formal framework behind arithmetic intensity
+- The Roofline Model (Williams et al.) the formal framework behind arithmetic intensity
 
-*Code from this post is on my GitHub: [link]. Questions or corrections welcome — this is a learning journey and I'm sharing it as I go.*
+*Code from this post is on my GitHub: [link]. Questions or corrections welcome this is a learning journey and I'm sharing it as I go.*
