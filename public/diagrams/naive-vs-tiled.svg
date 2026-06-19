@@ -5,7 +5,7 @@
   <line x1="450" y1="40" x2="450" y2="500" stroke="#e2e8f0" stroke-width="2"/>
 
   <!-- ============ LEFT: NAIVE ============ -->
-  <text x="225" y="56" text-anchor="middle" font-size="20" font-weight="700" fill="#b91c1c">NAÏVE</text>
+  <text x="225" y="56" text-anchor="middle" font-size="20" font-weight="700" fill="#b91c1c">NAIVE</text>
   <text x="225" y="78" text-anchor="middle" font-size="13" fill="#64748b">every thread re-reads HBM directly</text>
 
   <!-- threads -->
