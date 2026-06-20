@@ -51,7 +51,7 @@ __global__ void matmul_naive(const float* A, const float* B, float* C, int N) {
 }
 ```
 
-**A quick detour: how does a thread know which element it owns?** This is the part that trips up everyone the first time. When you launch a kernel, you don't get one thread — you get a *grid* of them, organized in two levels:
+**A quick detour: how does a thread know which element it owns?** When you launch a kernel, you don't get one thread — you get a *grid* of them, organized in two levels:
 
 - The grid is divided into **blocks** (you choose the shape, e.g. 16×16 threads each).
 - Each block is a group of **threads** that run together on one SM and can share memory.
