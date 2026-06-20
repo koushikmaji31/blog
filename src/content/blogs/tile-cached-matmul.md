@@ -51,6 +51,28 @@ __global__ void matmul_naive(const float* A, const float* B, float* C, int N) {
 }
 ```
 
+**A quick detour: how does a thread know which element it owns?** This is the part that trips up everyone the first time. When you launch a kernel, you don't get one thread — you get a *grid* of them, organized in two levels:
+
+- The grid is divided into **blocks** (you choose the shape, e.g. 16×16 threads each).
+- Each block is a group of **threads** that run together on one SM and can share memory.
+
+CUDA hands every thread three built-in variables so it can figure out its own identity:
+
+- `threadIdx.x / .y` — the thread's coordinates *inside its block* (e.g. 0–15).
+- `blockIdx.x / .y` — *which block* this is, within the grid.
+- `blockDim.x / .y` — how many threads are in a block (here, 16).
+
+So the global coordinate is just **"which block am I in, times the block size, plus my offset inside the block":**
+
+```
+row = blockIdx.y * blockDim.y + threadIdx.y;
+col = blockIdx.x * blockDim.x + threadIdx.x;
+```
+
+Thread `(0,0)` of block `(0,0)` owns `C[0][0]`; thread `(0,0)` of block `(1,0)` owns `C[16][0]`; and so on. Every one of the N² output elements is claimed by exactly one thread, with no coordination needed. The `if (row < N && col < N)` guard just handles the case where N isn't a clean multiple of the block size, so the extra threads at the edges do nothing instead of writing out of bounds.
+
+That mapping — *grid → block → thread → one output element* — is the mental model for the rest of this post. Tiling, below, keeps the exact same mapping for the output; it only changes how each block *fetches its inputs*.
+
 This is *correct*. It is also leaving most of the GPU on the table. Here's the problem, and it has nothing to do with the math.
 
 Look at the inner loop. Each iteration does **two reads from global memory** (`A` and `B`) and **two floating-point operations** (one multiply, one add). On an NVIDIA A100:
